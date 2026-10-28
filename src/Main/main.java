@@ -3,6 +3,7 @@ package Main;
 import Business.BuscadorProductos;
 import Domain.Producto;
 import Domain.ResultadoBusqueda;
+import Domain.ResultadoParcial;
 
 public class main {
 
@@ -15,10 +16,17 @@ public class main {
         }
         System.out.println();
 
+        //busqueda lineal
         probarLineal(productos, 1021);   // existe
         probarLineal(productos, 7777);   // no existe
-    }
 
+        System.out.println();
+        //busqueda por nombre parcial
+        probarParcial(productos, "lap");  // 2 coincidencias
+        probarParcial(productos, "HDMI"); // mayúsculas, 1 coincidencia
+        probarParcial(productos, "ZZZzzzz");  // ninguna
+    }
+// 1. Busqueda lineal
     private static void probarLineal(Producto[] productos, int codigo) {
         ResultadoBusqueda r = BuscadorProductos.busquedaLineal(productos, codigo);
         if (r.encontrado()) {
@@ -29,6 +37,22 @@ public class main {
                     + r.getComparaciones() + " comparaciones)");
         }
     }
+
+    // 2. busqueda por nombre parcial
+    private static void probarParcial(Producto[] productos, String texto) {
+        ResultadoParcial r = BuscadorProductos.buscarPorNombreParcial(productos, texto);
+        if (r.cantidad() == 0) {
+            System.out.println("Sin coincidencias para \"" + texto + "\"");
+        } else {
+            System.out.println("Coincidencias para \"" + texto + "\": " + r.cantidad());
+            for (int idx : r.getIndices()) {
+                System.out.println("  posición " + idx + " -> " + productos[idx]);
+            }
+        }
+        System.out.println("  Comparaciones de caracteres: " + r.getComparaciones());
+    }
+
+
 
     //** Inventario inicial
     public static Producto[] crearInventarioInicial() {
