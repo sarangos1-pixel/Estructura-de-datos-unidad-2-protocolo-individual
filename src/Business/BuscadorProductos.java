@@ -63,7 +63,7 @@ public final class BuscadorProductos {
         return new ResultadoParcial(indices, comparaciones);
     }
 
-    // Utilidad: convierte a minúscula sin usar toLowerCase()
+    // convierte a minúscula
     private static String aMinuscula(String s) {
         char[] c = new char[s.length()];
         for (int i = 0; i < c.length; i++) {
@@ -74,5 +74,34 @@ public final class BuscadorProductos {
             c[i] = ch;
         }
         return new String(c);
+    }
+
+    // 3. ordenamiento por codigo
+    public static void ordenarPorCodigo(Producto[] productos) {
+        if (productos == null) {
+            return;
+        }
+        for (int i = 1; i < productos.length; i++) {
+            Producto actual = productos[i];
+            int j = i - 1;
+            while (j >= 0 && productos[j].getCodigo() > actual.getCodigo()) {
+                productos[j + 1] = productos[j];
+                j--;
+            }
+            productos[j + 1] = actual;
+        }
+    }
+
+    //Verifica que la lista esté ordenada por código.
+    public static boolean estaOrdenadoPorCodigo(Producto[] productos) {
+        if (productos == null) {
+            return true;
+        }
+        for (int i = 1; i < productos.length; i++) {
+            if (productos[i - 1].getCodigo() > productos[i].getCodigo()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

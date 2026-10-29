@@ -25,6 +25,17 @@ public class main {
         probarParcial(productos, "lap");  // 2 coincidencias
         probarParcial(productos, "HDMI"); // mayúsculas, 1 coincidencia
         probarParcial(productos, "ZZZzzzz");  // ninguna
+        System.out.println();
+
+        //ordenamiento por codigo
+        System.out.println("¿Está ordenado por código? "
+                + BuscadorProductos.estaOrdenadoPorCodigo(productos));
+        BuscadorProductos.ordenarPorCodigo(productos);
+        System.out.println("Después de ordenar:");
+        listar(productos);
+        System.out.println("¿Está ordenado por código? "
+                + BuscadorProductos.estaOrdenadoPorCodigo(productos));
+
     }
 // 1. Busqueda lineal
     private static void probarLineal(Producto[] productos, int codigo) {
@@ -50,6 +61,13 @@ public class main {
             }
         }
         System.out.println("  Comparaciones de caracteres: " + r.getComparaciones());
+    }
+
+    //3, ordenamiento por codigo
+    private static void listar(Producto[] productos) {
+        for (int i = 0; i < productos.length; i++) {
+            System.out.println("  posición " + i + " -> " + productos[i]);
+        }
     }
 
 
