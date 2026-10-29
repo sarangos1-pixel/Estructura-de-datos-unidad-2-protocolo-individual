@@ -104,4 +104,33 @@ public final class BuscadorProductos {
         }
         return true;
     }
+
+    // 4. Búsqueda binaria después del ordenamiento.
+    public static ResultadoBusqueda busquedaBinaria(Producto[] productos, int codigo) {
+        if (productos == null || productos.length == 0) {
+            return new ResultadoBusqueda(-1, 0);
+        }
+        if (!estaOrdenadoPorCodigo(productos)) {
+            throw new IllegalStateException(
+                    "La búsqueda binaria requiere el arreglo ordenado por código. "
+                            + "Ordene primero con ordenarPorCodigo().");
+        }
+        int comparaciones = 0;
+        int lo = 0;
+        int hi = productos.length - 1;
+        while (lo <= hi) {
+            int mid = lo + ((hi - lo) >>> 1); // evita desbordamiento
+            comparaciones++;
+            int codigoMedio = productos[mid].getCodigo();
+            if (codigoMedio == codigo) {
+                return new ResultadoBusqueda(mid, comparaciones);
+            }
+            if (codigoMedio < codigo) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return new ResultadoBusqueda(-1, comparaciones);
+    }
 }

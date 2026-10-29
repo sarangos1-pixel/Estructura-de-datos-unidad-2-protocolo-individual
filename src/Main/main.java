@@ -27,17 +27,32 @@ public class main {
         probarParcial(productos, "ZZZzzzz");  // ninguna
         System.out.println();
 
-        //ordenamiento por codigo
+        // binaria sin ordenar (debe rechazarla)
         System.out.println("¿Está ordenado por código? "
                 + BuscadorProductos.estaOrdenadoPorCodigo(productos));
+        try {
+            BuscadorProductos.busquedaBinaria(productos, 1045);
+        } catch (IllegalStateException e) {
+            System.out.println("Binaria sin ordenar -> " + e.getMessage());
+        }
+        System.out.println();
+
+        // 4. ordenamiento por codigo
         BuscadorProductos.ordenarPorCodigo(productos);
         System.out.println("Después de ordenar:");
         listar(productos);
-        System.out.println("¿Está ordenado por código? "
+        System.out.println("Está ordenado por código? "
                 + BuscadorProductos.estaOrdenadoPorCodigo(productos));
+        System.out.println();
 
+        //busqueda binaria
+        probarBinaria(productos, 1045);   // existe, en el centro
+        probarBinaria(productos, 1003);   // existe, al inicio
+        probarBinaria(productos, 1099);   // existe, al final
+        probarBinaria(productos, 1050);   // no existe
     }
-// 1. Busqueda lineal
+
+    // 1. Busqueda lineal
     private static void probarLineal(Producto[] productos, int codigo) {
         ResultadoBusqueda r = BuscadorProductos.busquedaLineal(productos, codigo);
         if (r.encontrado()) {
@@ -63,14 +78,23 @@ public class main {
         System.out.println("  Comparaciones de caracteres: " + r.getComparaciones());
     }
 
-    //3, ordenamiento por codigo
+    // 3. busqueda binaria
+    private static void probarBinaria(Producto[] productos, int codigo) {
+        ResultadoBusqueda r = BuscadorProductos.busquedaBinaria(productos, codigo);
+        if (r.encontrado()) {
+            System.out.println("Binaria: código " + codigo + " encontrado en la posición "
+                    + r.getIndice() + " (" + r.getComparaciones() + " comparaciones)");
+        } else {
+            System.out.println("Binaria: el código " + codigo + " NO existe ("
+                    + r.getComparaciones() + " comparaciones)");
+        }
+    }
+
     private static void listar(Producto[] productos) {
         for (int i = 0; i < productos.length; i++) {
             System.out.println("  posición " + i + " -> " + productos[i]);
         }
     }
-
-
 
     //** Inventario inicial
     public static Producto[] crearInventarioInicial() {
